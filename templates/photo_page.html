@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>photo page</title>
+{% endblock %}
+
+{% block contents %}
+    {{ time }}
+    <img id="rotating-image" alt="Rotating Image" width="100%" height="100%">
+
+    <script>
+        // 画像のURLのリスト
+        var imageUrls = {{ image_urls|tojson|safe }};
+        
+        // 画像を切り替える間隔（ミリ秒）
+        var interval = 1500; // 3秒ごとに変更
+        
+        var index = 0;
+        var rotatingImage = document.getElementById("rotating-image");
+        
+        // 画像を切り替える関数
+        function changeImage() {
+            rotatingImage.src = imageUrls[index];
+            index = (index + 1) % imageUrls.length;
+        }
+        
+        // 最初の画像を表示
+        changeImage();
+        
+        // 一定時間ごとに画像を切り替える
+        setInterval(changeImage, interval);
+    </script>
+
+
+    <a href="/">go to top page</a>
+{% endblock %}
