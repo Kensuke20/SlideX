@@ -41,9 +41,3 @@ def staticfile_cp(fname):
     path = os.path.join(app.root_path, 'static', fname)
     mtime = str(int(os.stat(path).st_mtime))
     return '/static/' + fname + '?v=' + str(mtime)
-
-
-
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
