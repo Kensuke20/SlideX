@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, request
-from datetime import datetime
+from datetime import datetime   # delete later
 import glob, os
+import slidex.photo, slidex.db
 
 app = Flask(__name__)
 
@@ -24,11 +25,10 @@ def upload_page():
 @app.route('/upload', methods=['POST'])
 def upload_try():
     upfile = request.files['upfile']
-    fname = datetime.now().strftime('%Y%m%d%H%M%S') + '.jpg'
+    file_path = slidex.photo.save_photo(upfile)
+    slidex.db.add_photo(file_path)
 
-    upfile.save('/static/images/' + fname)
-
-    return redirect('/photo')
+    return redirect('/')
 
 
 
