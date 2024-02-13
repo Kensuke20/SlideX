@@ -5,32 +5,80 @@
 {% endblock %}
 
 {% block contents %}
-    {{ time }}
-    <img id="rotating-image" alt="Rotating Image" width="100%" height="100%">
+    {{ time }}<br>
+<p>
+<button id="increaseIntervalButton">+1</button>
+切替間隔: <span id="variableValue">3</span> sec
+<button id="decreaseIntervalButton">-1</button>
+</p>
+<a href="/">go to top page</a>
+<br>
+<img id="rotating-image" alt="Rotating Image" width="100%" height="100%">
 
-    <script>
-        // 画像のURLのリスト
-        var imageUrls = {{ image_urls|tojson|safe }};
-        
-        // 画像を切り替える間隔（ミリ秒）
-        var interval = 1500; // 3秒ごとに変更
-        
-        var index = 0;
-        var rotatingImage = document.getElementById("rotating-image");
-        
-        // 画像を切り替える関数
-        function changeImage() {
-            rotatingImage.src = imageUrls[index];
-            index = (index + 1) % imageUrls.length;
+<script>
+    //
+    // 切替間隔の変数を増減させる処理
+    //
+    // 変更したい変数を定義
+    var variable = 1;
+
+    // 変数の値を増やす関数
+    function increaseVariable() {
+    variable++;
+    updateVariableValue();
+    }
+
+    // 変数の値を減らす関数
+    function decreaseVariable() {
+    variable--;
+    updateVariableValue();
+    }
+
+    // 変数の値をHTMLに表示する関数
+    function updateVariableValue() {
+    var variableValueElement = document.getElementById("variableValue");
+    variableValueElement.textContent = variable;
+    }
+
+
+    //
+    // 写真を切り替える処理
+    //
+    var imageUrls = {{ image_urls|tojson|safe }};
+    var interval = 3000; // 初期値は3000ms（3.0秒）
+    var index = 0;
+    var rotatingImage = document.getElementById("rotating-image");
+    var slideshowInterval = 0;
+
+    function changeImage() {
+        rotatingImage.src = imageUrls[index];
+        index = (index + 1) % imageUrls.length;
+    }
+    // 最初の画像を表示
+    changeImage();
+
+    function startSlideshow() {
+        clearInterval(slideshowInterval); // 既存のインターバルをクリア
+        slideshowInterval = setInterval(changeImage, interval);
+    }
+    startSlideshow(); // スライドショーを開始
+
+    // ボタンのクリックイベントを処理
+    var increaseIntervalButton = document.getElementById("increaseIntervalButton");
+    increaseIntervalButton.addEventListener("click", function() {
+        interval += 1000; // インターバルを1000ms増加
+        increaseVariable();
+        startSlideshow(); // スライドショーを再開
+    });
+
+    var decreaseIntervalButton = document.getElementById("decreaseIntervalButton");
+    decreaseIntervalButton.addEventListener("click", function() {
+        if (interval > 1000) { // インターバルが最小値以上の場合のみ減少させる
+            interval -= 1000; // インターバルを1000ms減少
+            decreaseVariable();
+            startSlideshow(); // スライドショーを再開
         }
-        
-        // 最初の画像を表示
-        changeImage();
-        
-        // 一定時間ごとに画像を切り替える
-        setInterval(changeImage, interval);
-    </script>
+    });
+</script>
 
-
-    <a href="/">go to top page</a>
 {% endblock %}
