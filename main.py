@@ -1,8 +1,8 @@
-import slidex.sqlite_op
+import lib.sqlite_op
 import routing
 
 def init_slidex_db():
-    slidex.sqlite_op.exec_db('''
+    lib.sqlite_op.exec_db('''
             /* photo info */
             CREATE TABLE IF NOT EXISTS photos (
             photo_id        INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -13,7 +13,7 @@ def init_slidex_db():
             )
             ''')
 
-    slidex.sqlite_op.exec_db('''
+    lib.sqlite_op.exec_db('''
             /* album info */
             CREATE TABLE IF NOT EXISTS albums (
             album_id      INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -21,7 +21,7 @@ def init_slidex_db():
             )
             ''')
 
-    slidex.sqlite_op.exec_db('''
+    lib.sqlite_op.exec_db('''
             /* mapping info */
             CREATE TABLE IF NOT EXISTS album_photo_map (
             album_id        INTEGER,
