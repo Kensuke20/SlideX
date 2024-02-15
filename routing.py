@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request
-from datetime import datetime   # delete later
+from datetime import datetime
 import glob, os
 import lib.photo, lib.db
 
