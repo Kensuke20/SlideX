@@ -8,7 +8,7 @@
     {{ time }}<br>
 <p>
 <button id="increaseIntervalButton">+1</button>
-切替間隔: <span id="variableValue">3</span> sec
+切替間隔: <span id="variableValue">3</span> 秒
 <button id="decreaseIntervalButton">-1</button>
 </p>
 <a href="/">go to top page</a>
@@ -20,24 +20,26 @@
     // 切替間隔の変数を増減させる処理
     //
     // 変更したい変数を定義
-    var variable = 1;
+    var variable = 3; // 切替間隔の初期値は3秒
 
     // 変数の値を増やす関数
     function increaseVariable() {
-    variable++;
-    updateVariableValue();
+        variable++;
+        updateVariableValue();
     }
 
     // 変数の値を減らす関数
     function decreaseVariable() {
-    variable--;
-    updateVariableValue();
+        if(variable > 0){
+            variable--;
+            updateVariableValue();
+        }
     }
 
     // 変数の値をHTMLに表示する関数
     function updateVariableValue() {
-    var variableValueElement = document.getElementById("variableValue");
-    variableValueElement.textContent = variable;
+        var variableValueElement = document.getElementById("variableValue");
+        variableValueElement.textContent = variable;
     }
 
 
@@ -45,7 +47,7 @@
     // 写真を切り替える処理
     //
     var imageUrls = {{ image_urls|tojson|safe }};
-    var interval = 3000; // 初期値は3000ms（3.0秒）
+    var interval = variable * 1000;
     var index = 0;
     var rotatingImage = document.getElementById("rotating-image");
     var slideshowInterval = 0;
