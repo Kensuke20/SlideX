@@ -17,6 +17,10 @@ def remove_photo(photo_id):
     slidex.sqlite_op.exec_db('DELETE FROM photos WHERE photo_id=?', photo_id)
 
 
+# すべての写真を取得
+def get_all_photos():
+    return slidex.sqlite_op.select_db('SELECT * FROM photos ORDER BY photo_id DESC LIMIT 50')
+
 
 
 
@@ -29,7 +33,7 @@ def add_album(album_name):
     return album_id
 
 def remove_album(album_id):
-    sqlite_op.exec_db('DELETE FROM albums WHERE album_id=?', album_id)
+    slidex.sqlite_op.exec_db('DELETE FROM albums WHERE album_id=?', album_id)
 
 
 
@@ -37,7 +41,7 @@ def remove_album(album_id):
 # Register photos in an album
 def update_album(album_id, photo_ids):
     for photo_id in photo_ids:
-        sqlite_op.exec_db('''
+        slidex.sqlite_op.exec_db('''
                 INSERT INTO album_photo_map (album_id, photo_id)
                 VALUES (?,?)''',
                 album_id, photo_id

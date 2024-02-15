@@ -12,7 +12,7 @@ def index():
 
 @app.route('/photo_page')
 def photo_page():
-    image_urls = glob.glob("./static/images/*.jpg")
+    image_urls = [d.get('file_path') for d in slidex.db.get_all_photos()]
     st_birthtime = os.stat(image_urls[0]).st_ctime      # remove later
     birth_time = datetime.fromtimestamp(st_birthtime)   # remove later
     return render_template('photo_page.html', image_urls=image_urls, time=birth_time)
@@ -25,6 +25,8 @@ def upload_page():
 @app.route('/upload', methods=['POST'])
 def upload_try():
     upfile = request.files['upfile']
+    if upfile.filename == '': return 'アップロード失敗：ファイルを選択してください'
+
     file_path = slidex.photo.save_photo(upfile)
     slidex.db.add_photo(file_path)
 
