@@ -40,6 +40,8 @@ def upload_try():
 
 @app.route('/update')
 def update_try():
+    lib.db.clear_db()
+    lib.db.init_db()
     image_urls = glob.glob("./static/images/*.jpg")
     for image_url in image_urls:
         birth_time = datetime.fromtimestamp(os.stat(image_url).st_mtime)

@@ -1,3 +1,4 @@
+import os
 import lib.sqlite_op
 
 def init_db():
@@ -28,6 +29,12 @@ def init_db():
             PRIMARY KEY(photo_id, album_id)
             )
             ''')
+
+def clear_db():
+    db_filename = './db/slidex.sqlite3'
+    if os.path.isfile(db_filename):
+        os.remove(db_filename)
+
 
 def add_photo(file_path, birth_time):
 
