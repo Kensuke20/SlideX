@@ -8,14 +8,18 @@ app = Flask(__name__)
 # top page
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', albums=lib.db.get_all_albums())
 
 @app.route('/photo_page')
-def photo_page():
+def all_photo_page():
     image_urls = [d.get('file_path') for d in lib.db.get_all_photos()]
-    st_birthtime = os.stat(image_urls[0]).st_ctime      # remove later
-    birth_time = datetime.fromtimestamp(st_birthtime)   # remove later
-    return render_template('photo_page.html', image_urls=image_urls, time=birth_time)
+    print(image_urls)
+    return render_template('photo_page.html', image_urls=image_urls)
+
+@app.route('/photo_page/<album_id>')
+def photo_page(album_id):
+    image_urls = [d.get('file_path') for d in lib.db.get_photos_from_album(album_id)]
+    return render_template('photo_page.html', image_urls=image_urls)
 
 
 @app.route('/upload_page')
@@ -27,12 +31,21 @@ def upload_try():
     upfile = request.files['upfile']
     if upfile.filename == '': return 'アップロード失敗：ファイルを選択してください'
 
-    file_path = lib.photo.save_photo(upfile)
-    birth_time = datetime.fromtimestamp(os.stat(file_path).st_ctime)
-    lib.db.add_photo(file_path, birth_time)
+    image_url = lib.photo.save_photo(upfile)
+    birth_time = datetime.fromtimestamp(os.stat(image_url).st_ctime)
+    lib.db.add_photo(image_url, birth_time)
 
     return redirect('/')
 
+
+@app.route('/update')
+def update_try():
+    image_urls = glob.glob("./static/images/*.jpg")
+    for image_url in image_urls:
+        birth_time = datetime.fromtimestamp(os.stat(image_url).st_mtime)
+        lib.db.add_photo(image_url, birth_time)
+
+    return redirect('/')
 
 
 # Automatically add version after static file

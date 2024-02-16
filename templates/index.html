@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block contents %}
-<a href="/upload_page">go to upload page</a></br>
-<a href="/photo_page">go to photo page</a>
+    <a href="/upload_page">go to upload page</a></br>
+
+    <p>
+    <input type="button" class="button" onclick="location.href='/photo_page'" value="すべて">
+    {% for album in albums %}
+        <input type="button" class="button" onclick="location.href='/photo_page/{{ album.album_id }}'" value="{{ album.album_name }}日">
+    {% endfor %}
+    </p>
 {% endblock %}

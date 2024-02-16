@@ -36,6 +36,15 @@ def add_photo(file_path, birth_time):
         VALUES (?, ?, ?, ?)''',
         file_path, birth_time.year, birth_time.month, birth_time.day
     )
+
+    records = lib.sqlite_op.select_db('SELECT album_id, album_name FROM albums WHERE album_name=?', birth_time.day)
+    if records == []:
+        album_id = create_album(str(birth_time.day))
+    else:
+        album_id = records[0]['album_id']
+
+    register_album(album_id, [photo_id])
+
     return photo_id
 
 
@@ -50,7 +59,7 @@ def get_all_photos():
 
 
 
-def add_album(album_name):
+def create_album(album_name):
     album_id = lib.sqlite_op.exec_db('''
         INSERT INTO albums (album_name)
         VALUES (?)''',
@@ -63,12 +72,28 @@ def remove_album(album_id):
 
 
 
-
 # Register photos in an album
-def update_album(album_id, photo_ids):
+def register_album(album_id, photo_ids):
     for photo_id in photo_ids:
         lib.sqlite_op.exec_db('''
                 INSERT INTO album_photo_map (album_id, photo_id)
                 VALUES (?,?)''',
                 album_id, photo_id
         )
+
+
+# すべてのアルバムを取得
+def get_all_albums():
+    return lib.sqlite_op.select_db('SELECT * FROM albums ORDER BY album_id DESC LIMIT 50')
+
+
+
+
+# アルバムに登録されている写真を取得
+def get_photos_from_album(album_id):
+    records = lib.sqlite_op.select_db('SELECT photo_id FROM album_photo_map WHERE album_id=?', album_id)
+    photos = []
+    for record in records:
+        photos.append(lib.sqlite_op.select_db('SELECT * FROM photos WHERE photo_id=?', record['photo_id'])[0])
+
+    return photos

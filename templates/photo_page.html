@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block contents %}
-    {{ time }}<br>
 <p>
 <button id="increaseIntervalButton">+1</button>
 切替間隔: <span id="variableValue">3</span> 秒
@@ -54,6 +53,7 @@
 
     function changeImage() {
         rotatingImage.src = imageUrls[index];
+        rotatingImage.src = rotatingImage.src.replace(/\/photo_page\//, "/");
         index = (index + 1) % imageUrls.length;
     }
     // 最初の画像を表示
