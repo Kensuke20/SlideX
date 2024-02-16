@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 import lib.sqlite_op
 
 def init_db():
@@ -36,7 +37,8 @@ def clear_db():
         os.remove(db_filename)
 
 
-def add_photo(file_path, birth_time):
+def add_photo(file_path):
+    birth_time = datetime.fromtimestamp(os.stat(file_path).st_mtime)
 
     photo_id = lib.sqlite_op.exec_db('''
         INSERT INTO photos (file_path, created_year, created_month, created_day)

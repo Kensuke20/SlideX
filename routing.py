@@ -1,5 +1,4 @@
 from flask import Flask, render_template, redirect, request
-from datetime import datetime
 import glob, os
 import lib.photo, lib.db
 
@@ -13,7 +12,6 @@ def index():
 @app.route('/photo_page')
 def all_photo_page():
     image_urls = [d.get('file_path') for d in lib.db.get_all_photos()]
-    print(image_urls)
     return render_template('photo_page.html', image_urls=image_urls)
 
 @app.route('/photo_page/<album_id>')
@@ -32,8 +30,7 @@ def upload_try():
     if upfile.filename == '': return 'アップロード失敗：ファイルを選択してください'
 
     image_url = lib.photo.save_photo(upfile)
-    birth_time = datetime.fromtimestamp(os.stat(image_url).st_ctime)
-    lib.db.add_photo(image_url, birth_time)
+    lib.db.add_photo(image_url)
 
     return redirect('/')
 
@@ -44,8 +41,7 @@ def update_try():
     lib.db.init_db()
     image_urls = glob.glob("./static/images/*.jpg")
     for image_url in image_urls:
-        birth_time = datetime.fromtimestamp(os.stat(image_url).st_mtime)
-        lib.db.add_photo(image_url, birth_time)
+        lib.db.add_photo(image_url)
 
     return redirect('/')
 
