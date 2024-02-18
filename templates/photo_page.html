@@ -5,9 +5,14 @@
 {% endblock %}
 
 {% block contents %}
+<audio autoplay>
+    <source src="{{ url_for('static', filename='music/a.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
 <p>
 <button id="increaseIntervalButton">+1</button>
-切替間隔: <span id="variableValue">3</span> 秒
+切替間隔: <span id="variableValue">2</span> 秒
 <button id="decreaseIntervalButton">-1</button>
 </p>
 <a href="/">go to top page</a>
@@ -19,7 +24,7 @@
     // 切替間隔の変数を増減させる処理
     //
     // 変更したい変数を定義
-    var variable = 3; // 切替間隔の初期値は3秒
+    var variable = 2; // 切替間隔の初期値は2秒
 
     // 変数の値を増やす関数
     function increaseVariable() {

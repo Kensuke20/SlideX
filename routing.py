@@ -40,6 +40,7 @@ def update_try():
     lib.db.clear_db()
     lib.db.init_db()
     image_urls = glob.glob("./static/images/*.jpg")
+    image_urls += glob.glob("./static/images/*.jpeg")
     for image_url in image_urls:
         lib.db.add_photo(image_url)
 

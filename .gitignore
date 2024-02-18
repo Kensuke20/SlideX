@@ -1,0 +1,6 @@
+venv_SlideX/
+__pycache__/
+*.jpg
+*.jpeg
+*.mp3
+*.sqlite3
