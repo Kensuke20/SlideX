@@ -1,19 +1,18 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <title>top page</title>
+    <title>SlideX  - top page -</title>
 {% endblock %}
 
 {% block contents %}
-    <p>
-    <input type="button" class="button" onclick="location.href='/update'" value="アルバム更新">
-    </p>
-    <a href="/upload_page">go to upload page</a></br>
+    <div style="text-align: right">
+        <input type="button" class="button" onclick="location.href='/update'" value="アルバム更新">
+        <input type="button" class="button" onclick="location.href='/upload_page'" value="写真アップロード">
+    </div>
 
-    <p>
-    <input type="button" class="button" onclick="location.href='/photo_page'" value="すべて">
+    <b>アルバム一覧</b></br>
+    <input type="button" class="button" onclick="location.href='/photo_page'" value="全期間の写真">
     {% for album in albums %}
-        <input type="button" class="button" onclick="location.href='/photo_page/{{ album.album_id }}'" value="{{ album.album_name }}年">
+        <input type="button" class="button" onclick="location.href='/photo_page/{{ album.album_id }}'" value="{{ album.album_name }}年の写真">
     {% endfor %}
-    </p>
 {% endblock %}

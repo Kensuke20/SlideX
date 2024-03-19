@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <title>photo page</title>
+    <title>SlideX  - photo page -</title>
 {% endblock %}
 
 {% block contents %}
@@ -38,13 +38,19 @@
 
 
 
-<p>
+<input type="button" class="button" onclick="location.href='/'" value="トップページへ戻る">
+</br></br>
+
 <button id="increaseIntervalButton">+1</button>
 切替間隔: <span id="variableValue">2</span> 秒
 <button id="decreaseIntervalButton">-1</button>
-</p>
-<a href="/">go to top page</a>
-<br>
+</br>
+</br>
+
+<button id="pauseSlideshowButton">一時停止</button>
+<button id="resumeSlideshowButton">再開</button>
+
+
 <img id="rotating-image" alt="Rotating Image" width="60%" height="60%">
 
 <script>
@@ -114,6 +120,20 @@
             startSlideshow(); // スライドショーを再開
         }
     });
+
+    // スライドショーを一時停止する処理
+    var pauseSlideshowButton = document.getElementById("pauseSlideshowButton");
+    pauseSlideshowButton.addEventListener("click", function() {
+        clearInterval(slideshowInterval); // 既存のインターバルをクリア
+    });
+
+    // スライドショーを再開する処理
+    var resumeSlideshowButton = document.getElementById("resumeSlideshowButton");
+    resumeSlideshowButton.addEventListener("click", function() {
+        slideshowInterval = setInterval(changeImage, interval);
+    });
+
+
 </script>
 
 {% endblock %}

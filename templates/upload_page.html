@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <title>upload page</title>
+    <title>SlideX  - upload page -</title>
 {% endblock %}
 
 {% block contents %}
@@ -9,5 +9,7 @@
         <input type="file" name="upfile">
         <input type="submit" value="upload">
     </form>
-    <a href="/">go to top page</a>
+    </br>
+
+    <input type="button" class="button" onclick="location.href='/'" value="トップページへ戻る">
 {% endblock %}
