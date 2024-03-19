@@ -8,6 +8,7 @@ def init_db():
             CREATE TABLE IF NOT EXISTS photos (
             photo_id        INTEGER PRIMARY KEY AUTOINCREMENT,
             file_path       TEXT,
+            st_mtime        INTEGER,
             created_year    INTEGER,
             created_month   INTEGER,
             created_day     INTEGER
@@ -41,9 +42,9 @@ def add_photo(file_path):
     birth_time = datetime.fromtimestamp(os.stat(file_path).st_mtime)
 
     photo_id = lib.sqlite_op.exec_db('''
-        INSERT INTO photos (file_path, created_year, created_month, created_day)
-        VALUES (?, ?, ?, ?)''',
-        file_path, birth_time.year, birth_time.month, birth_time.day
+        INSERT INTO photos (file_path, st_mtime, created_year, created_month, created_day)
+        VALUES (?, ?, ?, ?, ?)''',
+        file_path, os.stat(file_path).st_mtime, birth_time.year, birth_time.month, birth_time.day
     )
 
     records = lib.sqlite_op.select_db('SELECT album_id, album_name FROM albums WHERE album_name=?', birth_time.year)
@@ -63,8 +64,7 @@ def remove_photo(photo_id):
 
 # すべての写真を取得
 def get_all_photos():
-    return lib.sqlite_op.select_db('SELECT * FROM photos ORDER BY photo_id DESC')
-    # return lib.sqlite_op.select_db('SELECT * FROM photos ORDER BY photo_id DESC LIMIT 50')
+    return lib.sqlite_op.select_db('SELECT * FROM photos ORDER BY st_mtime ASC')
 
 
 
@@ -105,5 +105,6 @@ def get_photos_from_album(album_id):
     photos = []
     for record in records:
         photos.append(lib.sqlite_op.select_db('SELECT * FROM photos WHERE photo_id=?', record['photo_id'])[0])
+        photos.sort(key=lambda x: x['st_mtime'])
 
     return photos

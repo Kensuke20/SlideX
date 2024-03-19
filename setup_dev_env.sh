@@ -6,7 +6,7 @@ fi
 source venv_SlideX/bin/activate
 
 # required python library
-REQUIREMENTS_LIST=("Flask")
+REQUIREMENTS_LIST=("Flask" "pillow")
 
 for requirement in ${REQUIREMENTS_LIST[@]};
 do
