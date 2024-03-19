@@ -46,9 +46,9 @@ def add_photo(file_path):
         file_path, birth_time.year, birth_time.month, birth_time.day
     )
 
-    records = lib.sqlite_op.select_db('SELECT album_id, album_name FROM albums WHERE album_name=?', birth_time.day)
+    records = lib.sqlite_op.select_db('SELECT album_id, album_name FROM albums WHERE album_name=?', birth_time.year)
     if records == []:
-        album_id = create_album(str(birth_time.day))
+        album_id = create_album(str(birth_time.year))
     else:
         album_id = records[0]['album_id']
 
@@ -63,7 +63,8 @@ def remove_photo(photo_id):
 
 # すべての写真を取得
 def get_all_photos():
-    return lib.sqlite_op.select_db('SELECT * FROM photos ORDER BY photo_id DESC LIMIT 50')
+    return lib.sqlite_op.select_db('SELECT * FROM photos ORDER BY photo_id DESC')
+    # return lib.sqlite_op.select_db('SELECT * FROM photos ORDER BY photo_id DESC LIMIT 50')
 
 
 
@@ -93,7 +94,7 @@ def register_album(album_id, photo_ids):
 
 # すべてのアルバムを取得
 def get_all_albums():
-    return lib.sqlite_op.select_db('SELECT * FROM albums ORDER BY album_id DESC LIMIT 50')
+    return lib.sqlite_op.select_db('SELECT * FROM albums ORDER BY album_id DESC')
 
 
 

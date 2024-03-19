@@ -13,7 +13,7 @@
     <p>
     <input type="button" class="button" onclick="location.href='/photo_page'" value="すべて">
     {% for album in albums %}
-        <input type="button" class="button" onclick="location.href='/photo_page/{{ album.album_id }}'" value="{{ album.album_name }}日">
+        <input type="button" class="button" onclick="location.href='/photo_page/{{ album.album_id }}'" value="{{ album.album_name }}年">
     {% endfor %}
     </p>
 {% endblock %}
