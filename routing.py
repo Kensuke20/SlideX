@@ -12,12 +12,14 @@ def index():
 @app.route('/photo_page')
 def all_photo_page():
     image_urls = [d.get('file_path') for d in lib.db.get_all_photos()]
-    return render_template('photo_page.html', image_urls=image_urls)
+    music_urls = [d.replace("./static/", "/static/") for d in glob.glob("./static/music/*.mp3")]
+    return render_template('photo_page.html', image_urls=image_urls, music_urls=music_urls)
 
 @app.route('/photo_page/<album_id>')
 def photo_page(album_id):
     image_urls = [d.get('file_path') for d in lib.db.get_photos_from_album(album_id)]
-    return render_template('photo_page.html', image_urls=image_urls)
+    music_urls = [d.replace("./static/", "/static/") for d in glob.glob("./static/music/*.mp3")]
+    return render_template('photo_page.html', image_urls=image_urls, music_urls=music_urls)
 
 
 @app.route('/upload_page')

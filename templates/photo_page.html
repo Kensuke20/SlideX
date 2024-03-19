@@ -5,10 +5,38 @@
 {% endblock %}
 
 {% block contents %}
-<audio autoplay>
-    <source src="{{ url_for('static', filename='music/a.mp3') }}" type="audio/mpeg">
+
+<audio id="musicPlayer" autoplay>
+    <source id="musicSource" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
+
+<script>
+    var musicFiles = [
+        {% for music_url in music_urls %}
+            "{{ music_url }}",
+        {% endfor %}
+    ];
+
+    var currentMusicIndex = 0;
+    var musicPlayer = document.getElementById('musicPlayer');
+    var musicSource = document.getElementById('musicSource');
+
+    musicPlayer.addEventListener('ended', function() {
+        // 次の曲を再生
+        currentMusicIndex = (currentMusicIndex + 1) % musicFiles.length;
+        musicSource.src = musicFiles[currentMusicIndex];
+        musicPlayer.load();
+        musicPlayer.play();
+    });
+
+    // 最初の曲を再生
+    musicSource.src = musicFiles[currentMusicIndex];
+    musicPlayer.load();
+    musicPlayer.play();
+</script>
+
+
 
 <p>
 <button id="increaseIntervalButton">+1</button>
@@ -17,7 +45,7 @@
 </p>
 <a href="/">go to top page</a>
 <br>
-<img id="rotating-image" alt="Rotating Image" width="100%" height="100%">
+<img id="rotating-image" alt="Rotating Image" width="60%" height="60%">
 
 <script>
     //
