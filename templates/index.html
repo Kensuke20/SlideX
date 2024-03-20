@@ -11,8 +11,23 @@
     </div>
 
     <b>アルバム一覧</b></br>
-    <input type="button" class="button" onclick="location.href='/photo_page'" value="全期間の写真">
+
     {% for album in albums %}
-        <input type="button" class="button" onclick="location.href='/photo_page/{{ album.album_id }}'" value="{{ album.album_name }}年の写真">
+    <div class="album_box">
+        <div class="album_info">
+            <h3>{{ album.album_name }}年の写真</h3>
+        </div>
+        <table>
+            <tbody>
+                <th>写真</th>
+                <td>枚</td>
+            </tbody>
+        </table>
+
+        <div style="text-align: right">
+            <input type="button" class="start_button" onclick="location.href='/photo_page/{{ album.album_id }}'" value="再生">
+        </div>
+    </div>
     {% endfor %}
+
 {% endblock %}
