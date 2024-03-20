@@ -41,6 +41,10 @@ def upload_try():
 def update_try():
     lib.db.clear_db()
     lib.db.init_db()
+
+    lib.photo.bmp2jpg(glob.glob("./static/images/*.bmp"))
+    lib.photo.bmp2jpg(glob.glob("./static/images/*.BMP"))
+
     image_urls = glob.glob("./static/images/*.jpg")
     image_urls += glob.glob("./static/images/*.JPG")
     image_urls += glob.glob("./static/images/*.jpeg")

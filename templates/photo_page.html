@@ -18,7 +18,7 @@
         {% endfor %}
     ];
 
-    var currentMusicIndex = 0;
+    var currentMusicIndex = Math.floor(Math.random() * musicFiles.length);
     var musicPlayer = document.getElementById('musicPlayer');
     var musicSource = document.getElementById('musicSource');
 
@@ -44,6 +44,8 @@
 <button id="increaseIntervalButton">+0.5</button>
 切替間隔: <span id="variableValue">2.0</span> 秒
 <button id="decreaseIntervalButton">-0.5</button>
+</br>
+<button id="reverseButton" style="width: 100px; height: 50px;">逆再生</button>
 </br>
 
 <button id="pauseSlideshowButton" style="width: 100px; height: 50px;">一時停止</button>
@@ -84,14 +86,20 @@
     //
     var imageUrls = {{ image_urls|tojson|safe }};
     var interval = variable * 1000;
-    var index = 0;
+    var index = Math.floor(Math.random() * imageUrls.length);
     var rotatingImage = document.getElementById("rotating-image");
     var slideshowInterval = 0;
+    var reverse = 0;
 
     function changeImage() {
         rotatingImage.src = imageUrls[index];
         rotatingImage.src = rotatingImage.src.replace(/\/photo_page\//, "/");
-        index = (index + 1) % imageUrls.length;
+        if(reverse){
+            if(index == 0) index = imageUrls.length - 1;
+            else index = (index - 1);
+        }else{
+            index = (index + 1) % imageUrls.length;
+        }
     }
     // 最初の画像を表示
     changeImage();
@@ -116,6 +124,16 @@
             interval -= 500; // インターバルを500減少
             decreaseVariable();
             startSlideshow(); // スライドショーを再開
+        }
+    });
+
+    // スライドショーを進める向きを変更
+    var reverseButton = document.getElementById("reverseButton");
+    reverseButton.addEventListener("click", function() {
+        if(reverse){
+            reverse = 0;
+        }else{
+            reverse = 1;
         }
     });
 
