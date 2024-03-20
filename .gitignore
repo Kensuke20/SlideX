@@ -3,5 +3,7 @@ __pycache__/
 *.jpg
 *.jpeg
 *.JPG
+*.BMP
+*.bmp
 *.mp3
 *.sqlite3

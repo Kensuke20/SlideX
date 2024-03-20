@@ -41,35 +41,33 @@
 <input type="button" class="button" onclick="location.href='/'" value="トップページへ戻る">
 </br></br>
 
-<button id="increaseIntervalButton">+1</button>
-切替間隔: <span id="variableValue">2</span> 秒
-<button id="decreaseIntervalButton">-1</button>
+<button id="increaseIntervalButton">+0.5</button>
+切替間隔: <span id="variableValue">2.0</span> 秒
+<button id="decreaseIntervalButton">-0.5</button>
 </br>
-</br>
 
-<button id="pauseSlideshowButton">一時停止</button>
-<button id="resumeSlideshowButton">再開</button>
+<button id="pauseSlideshowButton" style="width: 100px; height: 50px;">一時停止</button>
+<button id="resumeSlideshowButton" style="width: 100px; height: 50px;">再開</button>
 
-
-<img id="rotating-image" alt="Rotating Image" width="60%" height="60%">
+<img id="rotating-image" alt="Rotating Image" width="40%" height="40%">
 
 <script>
     //
     // 切替間隔の変数を増減させる処理
     //
     // 変更したい変数を定義
-    var variable = 2; // 切替間隔の初期値は2秒
+    var variable = 2.0; // 切替間隔の初期値は2.0秒
 
     // 変数の値を増やす関数
     function increaseVariable() {
-        variable++;
+        variable += 0.5;
         updateVariableValue();
     }
 
     // 変数の値を減らす関数
     function decreaseVariable() {
         if(variable > 0){
-            variable--;
+            variable -= 0.5;
             updateVariableValue();
         }
     }
@@ -107,15 +105,15 @@
     // ボタンのクリックイベントを処理
     var increaseIntervalButton = document.getElementById("increaseIntervalButton");
     increaseIntervalButton.addEventListener("click", function() {
-        interval += 1000; // インターバルを1000ms増加
+        interval += 500; // インターバルを500増加
         increaseVariable();
         startSlideshow(); // スライドショーを再開
     });
 
     var decreaseIntervalButton = document.getElementById("decreaseIntervalButton");
     decreaseIntervalButton.addEventListener("click", function() {
-        if (interval > 1000) { // インターバルが最小値以上の場合のみ減少させる
-            interval -= 1000; // インターバルを1000ms減少
+        if (interval > 500) { // インターバルが最小値以上の場合のみ減少させる
+            interval -= 500; // インターバルを500減少
             decreaseVariable();
             startSlideshow(); // スライドショーを再開
         }
