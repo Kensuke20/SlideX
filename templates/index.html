@@ -10,23 +10,28 @@
         <input type="button" class="button" onclick="location.href='/upload_page'" value="写真アップロード">
     </div>
 
-    <b>アルバム一覧</b></br>
+    <div style="text-align: center">
+        <h3>アルバム一覧</h3>
+    </div>
 
     {% for album in albums %}
     <div class="album_box">
+
         <div class="album_info">
-            <h3>{{ album.album_name }}年の写真</h3>
+            <table>
+                <th>{{ album.album_name }}年の写真</th>
+                <td>
+                    <input type="button" class="start_button" onclick="location.href='/photo_page/{{ album.album_id }}'" value="再生">
+                </td>
+            </table>
         </div>
+
         <table>
-            <tbody>
-                <th>写真</th>
-                <td>枚</td>
-            </tbody>
+            <tr>
+                <th>写真</th> <td>枚</td>
+            </tr>
         </table>
 
-        <div style="text-align: right">
-            <input type="button" class="start_button" onclick="location.href='/photo_page/{{ album.album_id }}'" value="再生">
-        </div>
     </div>
     {% endfor %}
 

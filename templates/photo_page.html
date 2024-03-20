@@ -37,19 +37,19 @@
 </script>
 
 
+<p>
+    <input type="button" class="button" onclick="location.href='/'" value="トップページへ戻る">
+</p>
 
-<input type="button" class="button" onclick="location.href='/'" value="トップページへ戻る">
-</br></br>
-
-<button id="increaseIntervalButton">+0.5</button>
+<button id="increaseIntervalButton" class="button">+0.5</button>
 切替間隔: <span id="variableValue">2.0</span> 秒
-<button id="decreaseIntervalButton">-0.5</button>
+<button id="decreaseIntervalButton" class="button">-0.5</button>
 </br>
-<button id="reverseButton" style="width: 100px; height: 50px;">逆再生</button>
+<button id="reverseButton" style="width: 100px; height: 50px;" class="button">逆再生</button>
 </br>
 
-<button id="pauseSlideshowButton" style="width: 100px; height: 50px;">一時停止</button>
-<button id="resumeSlideshowButton" style="width: 100px; height: 50px;">再開</button>
+<button id="pauseSlideshowButton" style="width: 100px; height: 50px;" class="button">一時停止</button>
+<button id="resumeSlideshowButton" style="width: 100px; height: 50px;" class="button">再開</button>
 
 <img id="rotating-image" alt="Rotating Image" width="40%" height="40%">
 
@@ -59,6 +59,7 @@
     //
     // 変更したい変数を定義
     var variable = 2.0; // 切替間隔の初期値は2.0秒
+    var i_am_running = 1;   // 再生中の場合は1
 
     // 変数の値を増やす関数
     function increaseVariable() {
@@ -140,13 +141,19 @@
     // スライドショーを一時停止する処理
     var pauseSlideshowButton = document.getElementById("pauseSlideshowButton");
     pauseSlideshowButton.addEventListener("click", function() {
-        clearInterval(slideshowInterval); // 既存のインターバルをクリア
+        if(i_am_running == 1){
+            clearInterval(slideshowInterval); // 既存のインターバルをクリア
+            i_am_running = 0;
+        }
     });
 
     // スライドショーを再開する処理
     var resumeSlideshowButton = document.getElementById("resumeSlideshowButton");
     resumeSlideshowButton.addEventListener("click", function() {
-        slideshowInterval = setInterval(changeImage, interval);
+        if(i_am_running == 0){
+            slideshowInterval = setInterval(changeImage, interval);
+            i_am_running = 1;
+        }
     });
 
 
