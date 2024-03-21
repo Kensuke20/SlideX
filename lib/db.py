@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 import lib.sqlite_op
+import lib.memo
 
 def init_db():
     lib.sqlite_op.exec_db('''
@@ -20,7 +21,7 @@ def init_db():
             CREATE TABLE IF NOT EXISTS albums (
             album_id      INTEGER PRIMARY KEY,
             title         TEXT,
-            memo          TEXT,
+            memo_path     TEXT,
             num_of_photo  INTEGER
             )
             ''')
@@ -75,11 +76,13 @@ def get_album_info(album_id):
 
 
 def create_album(album_id, title):
+    memo_path = lib.memo.save_memo(album_id, "未記入")
     album_id = lib.sqlite_op.exec_db('''
-        INSERT INTO albums (album_id, title, memo, num_of_photo)
+        INSERT INTO albums (album_id, title, memo_path, num_of_photo)
         VALUES (?,?,?,?)''',
-        album_id, title, "", 0,
+        album_id, title, memo_path, 0,
     )
+
 
 
 def remove_album(album_id):

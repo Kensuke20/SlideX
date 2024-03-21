@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request
 import glob, os
-import lib.photo, lib.db
+import lib.photo, lib.db, lib.memo
 
 app = Flask(__name__)
 
@@ -48,6 +48,10 @@ def update_try():
 
     return redirect('/')
 
+
+@app.template_filter('readfile')
+def readfile_filter(path):
+    return lib.memo.read_file(path)
 
 # Automatically add version after static file
 @app.context_processor

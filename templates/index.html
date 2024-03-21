@@ -30,7 +30,7 @@
                     <th>写真：</th> <td>{{ album.num_of_photo }}枚</td>
                 </tr>
                 <tr>
-                    <th>メモ：</th><td>{{ album.memo }}</td>
+                    <th>メモ：</th><td>{{ album.memo_path | readfile }}</td>
                 </tr>
             </table>
         </div>

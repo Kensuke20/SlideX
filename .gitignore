@@ -6,4 +6,5 @@ __pycache__/
 *.BMP
 *.bmp
 *.mp3
+*.txt
 *.sqlite3
