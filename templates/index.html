@@ -14,31 +14,11 @@
         <h3>アルバム一覧</h3>
     </div>
 
-    <div class="album_box">
-        <div class="album_info">
-            <table >
-                <th>全期間の写真</th>
-                <td>
-                    <input type="button" class="start_button" onclick="location.href='/photo_page'" value="再生">
-                </td>
-            </table>
-        </div>
-
-        <table>
-            <tr>
-                <th>写真</th> <td>枚</td>
-            </tr>
-            <tr>
-                <th>メモ</th><td>なし</td>
-            </tr>
-        </table>
-    </div>
-
     {% for album in albums %}
         <div class="album_box">
             <div class="album_info">
                 <table>
-                    <th>{{ album.title }}年の写真</th>
+                    <th>{{ album.title }}</th>
                     <td>
                         <input type="button" class="start_button" onclick="location.href='/photo_page/{{ album.album_id }}'" value="再生">
                     </td>
@@ -47,10 +27,10 @@
 
             <table>
                 <tr>
-                    <th>写真</th> <td>枚</td>
+                    <th>写真：</th> <td>{{ album.num_of_photo }}枚</td>
                 </tr>
                 <tr>
-                    <th>メモ</th><td>{{ album.memo }}</td>
+                    <th>メモ：</th><td>{{ album.memo }}</td>
                 </tr>
             </table>
         </div>

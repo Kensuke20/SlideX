@@ -18,10 +18,10 @@ def init_db():
     lib.sqlite_op.exec_db('''
             /* album info */
             CREATE TABLE IF NOT EXISTS albums (
-            album_id      INTEGER PRIMARY KEY AUTOINCREMENT,
+            album_id      INTEGER PRIMARY KEY,
             title         TEXT,
             memo          TEXT,
-            year_tmp      INTEGER
+            num_of_photo  INTEGER
             )
             ''')
 
@@ -49,12 +49,16 @@ def add_photo(file_path):
         file_path, os.stat(file_path).st_mtime, birth_time.year, birth_time.month, birth_time.day
     )
 
-    records = lib.sqlite_op.select_db('SELECT album_id, title FROM albums WHERE title=?', birth_time.year)
+    album_id = 0
+    records = lib.sqlite_op.select_db('SELECT * FROM albums WHERE album_id=?', album_id)
     if records == []:
-        album_id = create_album(str(birth_time.year), birth_time.year)
-    else:
-        album_id = records[0]['album_id']
+        create_album(album_id, '全期間の写真')
+    register_album(album_id, [photo_id])
 
+    album_id = birth_time.year
+    records = lib.sqlite_op.select_db('SELECT * FROM albums WHERE album_id=?', album_id)
+    if records == []:
+        create_album(album_id, f'{birth_time.year}年の写真')
     register_album(album_id, [photo_id])
 
     return photo_id
@@ -64,23 +68,19 @@ def remove_photo(photo_id):
     lib.sqlite_op.exec_db('DELETE FROM photos WHERE photo_id=?', photo_id)
 
 
-# すべての写真を取得
-def get_all_photos():
-    return lib.sqlite_op.select_db('SELECT * FROM photos ORDER BY st_mtime ASC')
-
-# アルバム名を取得
-def get_album_title(album_id):
-    return lib.sqlite_op.select_db('SELECT title FROM albums WHERE album_id=?', album_id)[0]
+# アルバム情報を取得
+def get_album_info(album_id):
+    return lib.sqlite_op.select_db('SELECT * FROM albums WHERE album_id=?', album_id)[0]
 
 
 
-def create_album(title, year_tmp):
+def create_album(album_id, title):
     album_id = lib.sqlite_op.exec_db('''
-        INSERT INTO albums (title, memo, year_tmp)
-        VALUES (?,?,?)''',
-        title, "",  year_tmp
+        INSERT INTO albums (album_id, title, memo, num_of_photo)
+        VALUES (?,?,?,?)''',
+        album_id, title, "", 0,
     )
-    return album_id
+
 
 def remove_album(album_id):
     lib.sqlite_op.exec_db('DELETE FROM albums WHERE album_id=?', album_id)
@@ -95,11 +95,13 @@ def register_album(album_id, photo_ids):
                 VALUES (?,?)''',
                 album_id, photo_id
         )
+    num_of_photo = get_album_info(album_id)['num_of_photo'] + len(photo_ids)
+    lib.sqlite_op.exec_db('UPDATE albums set num_of_photo=? WHERE album_id=?', num_of_photo, album_id)
 
 
 # すべてのアルバムを取得
 def get_all_albums():
-    return lib.sqlite_op.select_db('SELECT * FROM albums ORDER BY year_tmp ASC')
+    return lib.sqlite_op.select_db('SELECT * FROM albums ORDER BY album_id ASC')
 
 
 

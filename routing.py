@@ -9,17 +9,12 @@ app = Flask(__name__)
 def index():
     return render_template('index.html', albums=lib.db.get_all_albums())
 
-@app.route('/photo_page')
-def all_photo_page():
-    image_urls = [d.get('file_path') for d in lib.db.get_all_photos()]
-    music_urls = [d.replace("./static/", "/static/") for d in glob.glob("./static/music/*.mp3")]
-    return render_template('photo_page.html', image_urls=image_urls, music_urls=music_urls, album_title='全期間の写真')
 
 @app.route('/photo_page/<album_id>')
 def photo_page(album_id):
     image_urls = [d.get('file_path') for d in lib.db.get_photos_from_album(album_id)]
     music_urls = [d.replace("./static/", "/static/") for d in glob.glob("./static/music/*.mp3")]
-    return render_template('photo_page.html', image_urls=image_urls, music_urls=music_urls, album_title=lib.db.get_album_title(album_id)['title'] + '年の写真')
+    return render_template('photo_page.html', image_urls=image_urls, music_urls=music_urls, album=lib.db.get_album_info(album_id))
 
 
 @app.route('/upload_page')
