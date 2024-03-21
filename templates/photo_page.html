@@ -6,157 +6,166 @@
 
 {% block contents %}
 
-<audio id="musicPlayer" autoplay>
-    <source id="musicSource" type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
+    <h2>
+        タイトル：{{ album_title }}
+    </h2>
 
-<script>
-    var musicFiles = [
-        {% for music_url in music_urls %}
-            "{{ music_url }}",
-        {% endfor %}
-    ];
+    <p>
+        <input type="button" class="button" onclick="location.href='/'" value="トップページへ戻る">
+        <input type="button" class="button" value="メモを追加">
+    </p>
 
-    var currentMusicIndex = Math.floor(Math.random() * musicFiles.length);
-    var musicPlayer = document.getElementById('musicPlayer');
-    var musicSource = document.getElementById('musicSource');
+    <button id="increaseIntervalButton" class="button">+0.5</button>
+    切替間隔: <span id="variableValue">2.0</span> 秒
+    <button id="decreaseIntervalButton" class="button">-0.5</button>
+    </br>
+    <button id="reverseButton" style="width: 100px; height: 50px;" class="button">逆再生</button>
+    </br>
 
-    musicPlayer.addEventListener('ended', function() {
-        // 次の曲を再生
-        currentMusicIndex = (currentMusicIndex + 1) % musicFiles.length;
+    <button id="pauseSlideshowButton" style="width: 100px; height: 50px;" class="button">一時停止</button>
+    <button id="resumeSlideshowButton" style="width: 100px; height: 50px;" class="button">再開</button>
+
+    <img id="rotating-image" alt="Rotating Image" width="40%" height="40%">
+
+    <audio id="musicPlayer" autoplay>
+        <source id="musicSource" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+
+
+
+    <script>
+        var musicFiles = [
+            {% for music_url in music_urls %}
+                "{{ music_url }}",
+            {% endfor %}
+        ];
+
+        var currentMusicIndex = Math.floor(Math.random() * musicFiles.length);
+        var musicPlayer = document.getElementById('musicPlayer');
+        var musicSource = document.getElementById('musicSource');
+
+        musicPlayer.addEventListener('ended', function() {
+            // 次の曲を再生
+            currentMusicIndex = (currentMusicIndex + 1) % musicFiles.length;
+            musicSource.src = musicFiles[currentMusicIndex];
+            musicPlayer.load();
+            musicPlayer.play();
+        });
+
+        // 最初の曲を再生
         musicSource.src = musicFiles[currentMusicIndex];
         musicPlayer.load();
         musicPlayer.play();
-    });
-
-    // 最初の曲を再生
-    musicSource.src = musicFiles[currentMusicIndex];
-    musicPlayer.load();
-    musicPlayer.play();
-</script>
+    </script>
 
 
-<p>
-    <input type="button" class="button" onclick="location.href='/'" value="トップページへ戻る">
-</p>
 
-<button id="increaseIntervalButton" class="button">+0.5</button>
-切替間隔: <span id="variableValue">2.0</span> 秒
-<button id="decreaseIntervalButton" class="button">-0.5</button>
-</br>
-<button id="reverseButton" style="width: 100px; height: 50px;" class="button">逆再生</button>
-</br>
+    <script>
+        //
+        // 切替間隔の変数を増減させる処理
+        //
+        // 変更したい変数を定義
+        var variable = 2.0; // 切替間隔の初期値は2.0秒
+        var i_am_running = 1;   // 再生中の場合は1
 
-<button id="pauseSlideshowButton" style="width: 100px; height: 50px;" class="button">一時停止</button>
-<button id="resumeSlideshowButton" style="width: 100px; height: 50px;" class="button">再開</button>
-
-<img id="rotating-image" alt="Rotating Image" width="40%" height="40%">
-
-<script>
-    //
-    // 切替間隔の変数を増減させる処理
-    //
-    // 変更したい変数を定義
-    var variable = 2.0; // 切替間隔の初期値は2.0秒
-    var i_am_running = 1;   // 再生中の場合は1
-
-    // 変数の値を増やす関数
-    function increaseVariable() {
-        variable += 0.5;
-        updateVariableValue();
-    }
-
-    // 変数の値を減らす関数
-    function decreaseVariable() {
-        if(variable > 0){
-            variable -= 0.5;
+        // 変数の値を増やす関数
+        function increaseVariable() {
+            variable += 0.5;
             updateVariableValue();
         }
-    }
 
-    // 変数の値をHTMLに表示する関数
-    function updateVariableValue() {
-        var variableValueElement = document.getElementById("variableValue");
-        variableValueElement.textContent = variable;
-    }
-
-
-    //
-    // 写真を切り替える処理
-    //
-    var imageUrls = {{ image_urls|tojson|safe }};
-    var interval = variable * 1000;
-    var index = Math.floor(Math.random() * imageUrls.length);
-    var rotatingImage = document.getElementById("rotating-image");
-    var slideshowInterval = 0;
-    var reverse = 0;
-
-    function changeImage() {
-        rotatingImage.src = imageUrls[index];
-        rotatingImage.src = rotatingImage.src.replace(/\/photo_page\//, "/");
-        if(reverse){
-            if(index == 0) index = imageUrls.length - 1;
-            else index = (index - 1);
-        }else{
-            index = (index + 1) % imageUrls.length;
+        // 変数の値を減らす関数
+        function decreaseVariable() {
+            if(variable > 0){
+                variable -= 0.5;
+                updateVariableValue();
+            }
         }
-    }
-    // 最初の画像を表示
-    changeImage();
 
-    function startSlideshow() {
-        clearInterval(slideshowInterval); // 既存のインターバルをクリア
-        slideshowInterval = setInterval(changeImage, interval);
-    }
-    startSlideshow(); // スライドショーを開始
-
-    // ボタンのクリックイベントを処理
-    var increaseIntervalButton = document.getElementById("increaseIntervalButton");
-    increaseIntervalButton.addEventListener("click", function() {
-        interval += 500; // インターバルを500増加
-        increaseVariable();
-        startSlideshow(); // スライドショーを再開
-    });
-
-    var decreaseIntervalButton = document.getElementById("decreaseIntervalButton");
-    decreaseIntervalButton.addEventListener("click", function() {
-        if (interval > 500) { // インターバルが最小値以上の場合のみ減少させる
-            interval -= 500; // インターバルを500減少
-            decreaseVariable();
-            startSlideshow(); // スライドショーを再開
+        // 変数の値をHTMLに表示する関数
+        function updateVariableValue() {
+            var variableValueElement = document.getElementById("variableValue");
+            variableValueElement.textContent = variable;
         }
-    });
 
-    // スライドショーを進める向きを変更
-    var reverseButton = document.getElementById("reverseButton");
-    reverseButton.addEventListener("click", function() {
-        if(reverse){
-            reverse = 0;
-        }else{
-            reverse = 1;
+
+        //
+        // 写真を切り替える処理
+        //
+        var imageUrls = {{ image_urls|tojson|safe }};
+        var interval = variable * 1000;
+        var index = Math.floor(Math.random() * imageUrls.length);
+        var rotatingImage = document.getElementById("rotating-image");
+        var slideshowInterval = 0;
+        var reverse = 0;
+
+        function changeImage() {
+            rotatingImage.src = imageUrls[index];
+            rotatingImage.src = rotatingImage.src.replace(/\/photo_page\//, "/");
+            if(reverse){
+                if(index == 0) index = imageUrls.length - 1;
+                else index = (index - 1);
+            }else{
+                index = (index + 1) % imageUrls.length;
+            }
         }
-    });
+        // 最初の画像を表示
+        changeImage();
 
-    // スライドショーを一時停止する処理
-    var pauseSlideshowButton = document.getElementById("pauseSlideshowButton");
-    pauseSlideshowButton.addEventListener("click", function() {
-        if(i_am_running == 1){
+        function startSlideshow() {
             clearInterval(slideshowInterval); // 既存のインターバルをクリア
-            i_am_running = 0;
-        }
-    });
-
-    // スライドショーを再開する処理
-    var resumeSlideshowButton = document.getElementById("resumeSlideshowButton");
-    resumeSlideshowButton.addEventListener("click", function() {
-        if(i_am_running == 0){
             slideshowInterval = setInterval(changeImage, interval);
-            i_am_running = 1;
         }
-    });
+        startSlideshow(); // スライドショーを開始
+
+        // ボタンのクリックイベントを処理
+        var increaseIntervalButton = document.getElementById("increaseIntervalButton");
+        increaseIntervalButton.addEventListener("click", function() {
+            interval += 500; // インターバルを500増加
+            increaseVariable();
+            startSlideshow(); // スライドショーを再開
+        });
+
+        var decreaseIntervalButton = document.getElementById("decreaseIntervalButton");
+        decreaseIntervalButton.addEventListener("click", function() {
+            if (interval > 500) { // インターバルが最小値以上の場合のみ減少させる
+                interval -= 500; // インターバルを500減少
+                decreaseVariable();
+                startSlideshow(); // スライドショーを再開
+            }
+        });
+
+        // スライドショーを進める向きを変更
+        var reverseButton = document.getElementById("reverseButton");
+        reverseButton.addEventListener("click", function() {
+            if(reverse){
+                reverse = 0;
+            }else{
+                reverse = 1;
+            }
+        });
+
+        // スライドショーを一時停止する処理
+        var pauseSlideshowButton = document.getElementById("pauseSlideshowButton");
+        pauseSlideshowButton.addEventListener("click", function() {
+            if(i_am_running == 1){
+                clearInterval(slideshowInterval); // 既存のインターバルをクリア
+                i_am_running = 0;
+            }
+        });
+
+        // スライドショーを再開する処理
+        var resumeSlideshowButton = document.getElementById("resumeSlideshowButton");
+        resumeSlideshowButton.addEventListener("click", function() {
+            if(i_am_running == 0){
+                slideshowInterval = setInterval(changeImage, interval);
+                i_am_running = 1;
+            }
+        });
 
 
-</script>
+    </script>
 
 {% endblock %}
