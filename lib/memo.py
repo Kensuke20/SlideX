@@ -1,7 +1,7 @@
 import os
 
-def save_memo(memo_name, contents):
-    path = f'./static/memo/{memo_name}.txt'
+def save_memo(file_name, contents):
+    path = f'./static/memo/{file_name}.txt'
     try:
         with open(path, mode='x') as f:
             f.write(contents)

@@ -11,7 +11,7 @@
     </div>
 
     <div style="text-align: center">
-        <h3>アルバム一覧</h3>
+        <h1>アルバム一覧</h1>
     </div>
 
     {% for album in albums %}
@@ -30,7 +30,7 @@
                     <th>写真：</th> <td>{{ album.num_of_photo }}枚</td>
                 </tr>
                 <tr>
-                    <th>メモ：</th><td>{{ album.memo_path | readfile }}</td>
+                    <th>メモ：</th> <td>{{ album.memo_path | readfile }}</td>
                 </tr>
             </table>
         </div>

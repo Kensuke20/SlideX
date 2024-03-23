@@ -10,22 +10,19 @@
         タイトル：{{ album.title }}
     </h2>
 
-    <p>
         <input type="button" class="button" onclick="location.href='/'" value="トップページへ戻る">
-        <input type="button" class="button" value="メモを追加">
-    </p>
+        <input type="button" class="button" onclick="location.href='/take_notes_page/{{ album.album_id }}'" value="メモを追加">
 
-    <button id="increaseIntervalButton" class="button">+0.5</button>
+    <button id="increaseIntervalButton" style="height: 50px;" class="button">+0.5</button>
     切替間隔: <span id="variableValue">2.0</span> 秒
-    <button id="decreaseIntervalButton" class="button">-0.5</button>
-    </br>
-    <button id="reverseButton" style="width: 100px; height: 50px;" class="button">逆再生</button>
-    </br>
+    <button id="decreaseIntervalButton" style="height: 50px;" class="button">-0.5</button>
+    <br>
 
-    <button id="pauseSlideshowButton" style="width: 100px; height: 50px;" class="button">一時停止</button>
-    <button id="resumeSlideshowButton" style="width: 100px; height: 50px;" class="button">再開</button>
+    <button id="reverseButton" style="height: 50px;" class="button">逆再生</button>
+    <button id="pauseSlideshowButton" style="height: 50px;"class="button">一時停止</button>
+    <button id="resumeSlideshowButton" style="height: 50px;" class="button">再開</button>
 
-    <img id="rotating-image" alt="Rotating Image" width="40%" height="40%">
+    <img id="rotating-image" alt="Rotating Image" width="55%" height="55%">
     <span id="SlideNumber">1</span> / {{ album.num_of_photo }}
 
     <audio id="musicPlayer" autoplay>

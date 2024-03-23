@@ -76,7 +76,7 @@ def get_album_info(album_id):
 
 
 def create_album(album_id, title):
-    memo_path = lib.memo.save_memo(album_id, "未記入")
+    memo_path = lib.memo.save_memo(album_id, "")
     album_id = lib.sqlite_op.exec_db('''
         INSERT INTO albums (album_id, title, memo_path, num_of_photo)
         VALUES (?,?,?,?)''',

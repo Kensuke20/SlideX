@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>SlideX  - memo -</title>
+{% endblock %}
+
+{% block contents %}
+<form action="/take_notes/{{ album.album_id }}" method="POST" enctype="multipart/form-data" id="take_notes">
+
+    <textarea name="contents" rows="15" placeholder="メモを記述してください．">{{ album.memo_path | readfile }}</textarea>
+
+    <p style="text-align: center;"><input type="submit" class="button" form="take_notes" value="登録"></p>
+</form>
+
+{% endblock %}

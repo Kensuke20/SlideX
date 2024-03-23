@@ -48,6 +48,18 @@ def update_try():
 
     return redirect('/')
 
+@app.route('/take_notes_page/<album_id>')
+def take_notes_page(album_id):
+    return render_template('take_notes_page.html', album=lib.db.get_album_info(album_id))
+
+
+@app.route('/take_notes/<album_id>', methods=['POST'])
+def take_notes(album_id):
+    contents = request.form.get('contents', "")
+    lib.memo.update_memo(lib.db.get_album_info(album_id)['memo_path'], contents)
+    print("take_notes!!!")
+    return redirect(f'/photo_page/{album_id}')
+
 
 @app.template_filter('readfile')
 def readfile_filter(path):
