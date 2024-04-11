@@ -6,9 +6,9 @@
 
 {% block contents %}
 
-    <h2>
+    <h3>
         タイトル：{{ album.title }}
-    </h2>
+    </h3>
 
         <input type="button" class="button" onclick="location.href='/'" value="トップページへ戻る">
         <input type="button" class="button" onclick="location.href='/take_notes_page/{{ album.album_id }}'" value="メモを追加">
@@ -22,7 +22,7 @@
     <button id="pauseSlideshowButton" style="height: 50px;"class="button">一時停止</button>
     <button id="resumeSlideshowButton" style="height: 50px;" class="button">再開</button>
 
-    <img id="rotating-image" alt="Rotating Image" width="55%" height="55%">
+    <img id="rotating-image" alt="Rotating Image" width="50%" height="50%">
     <span id="SlideNumber">1</span> / {{ album.num_of_photo }}
 
     <audio id="musicPlayer" autoplay>
