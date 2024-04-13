@@ -1,4 +1,4 @@
-select {
+/* select {
 	font-size: 1em;
 	cursor: pointer
 }
@@ -10,4 +10,8 @@ select {
 
 .button:hover {
 	opacity: 0.8;
+} */
+
+.photo-hover:hover {
+	background-color: #f8f9fa; /* 明るい灰色 */
 }

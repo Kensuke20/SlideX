@@ -65,6 +65,11 @@ def take_notes(album_id):
 def readfile_filter(path):
     return lib.memo.read_file(path)
 
+@app.template_filter('removedot')
+def removedot_filter(path):
+    return path.removeprefix('.')
+
+
 # Automatically add version after static file
 @app.context_processor
 def add_staticfile():
