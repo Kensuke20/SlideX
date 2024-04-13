@@ -5,35 +5,38 @@
 {% endblock %}
 
 {% block contents %}
-    <div style="text-align: right">
-        <input type="button" class="button" onclick="location.href='/update'" value="アルバム更新">
-        <input type="button" class="button" onclick="location.href='/upload_page'" value="写真アップロード">
+    <div class="container">
+        <p class="text-right">
+            <a href="/update" class="btn btn-secondary my-2">アルバム更新</a>
+            <a href="/upload_page" class="btn btn-secondary my-2">写真アップロード</a>
+        </p>
     </div>
 
-    <div style="text-align: center">
-        <h1>アルバム一覧</h1>
-    </div>
 
-    {% for album in albums %}
-        <div class="album_box">
-            <div class="album_info">
-                <table>
-                    <th>{{ album.title }}</th>
-                    <td>
-                        <input type="button" class="start_button" onclick="location.href='/photo_page/{{ album.album_id }}'" value="再生">
-                    </td>
-                </table>
+    <section class="jumbotron text-center">
+    <p>
+      <h1 class="jumbotron-heading">アルバム一覧</h1>
+    </p>
+    <div class="container">
+        <div class="row">
+          {% for album in albums %}
+            <div class="col-md-3">
+              <div class="card mb-4 shadow-sm">
+                <div class="card-header">
+                  <h4 class="my-0 font-weight-normal">{{ album.title }}</h4>
+                </div>
+                <div class="card-body">
+                  <ul class="list-unstyled mt-3 mb-4">
+                    <li>{{ album.memo_path | readfile }} </li>
+                    <li class="text-muted">写真：{{ album.num_of_photo }}枚</li>
+                  </ul>
+                  <button type="button" class="btn btn-lg btn-block btn-primary" onclick="location.href='/photo_page/{{ album.album_id }}'">再生</button>
+                </div>
+              </div>
             </div>
-
-            <table>
-                <tr>
-                    <th>写真：</th> <td>{{ album.num_of_photo }}枚</td>
-                </tr>
-                <tr>
-                    <th>メモ：</th> <td>{{ album.memo_path | readfile }}</td>
-                </tr>
-            </table>
+          {% endfor %}
         </div>
-    {% endfor %}
+      </div>
+    </div>
 
 {% endblock %}
