@@ -14,29 +14,30 @@
 
 
     <section class="jumbotron text-center">
-    <p>
-      <h1 class="jumbotron-heading">アルバム一覧</h1>
-    </p>
-    <div class="container">
-        <div class="row">
-          {% for album in albums %}
-            <div class="col-md-3">
-              <div class="card mb-4 shadow-sm">
-                <div class="card-header">
-                  <h4 class="my-0 font-weight-normal">{{ album.title }}</h4>
-                </div>
-                <div class="card-body">
-                  <ul class="list-unstyled mt-3 mb-4">
-                    <li>{{ album.memo_path | readfile }} </li>
-                    <li class="text-muted">写真：{{ album.num_of_photo }}枚</li>
-                  </ul>
-                  <button type="button" class="btn btn-lg btn-block btn-primary" onclick="location.href='/photo_page/{{ album.album_id }}'">再生</button>
+      <p>
+        <h1 class="jumbotron-heading">アルバム一覧</h1>
+      </p>
+      <div class="container">
+          <div class="row">
+            {% for album in albums %}
+              <div class="col-md-3">
+                <div class="card mb-4 shadow-sm">
+                  <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ album.title }}</h4>
+                  </div>
+                  <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                      <li>{{ album.memo_path | readfile }} </li>
+                      <li class="text-muted">写真：{{ album.num_of_photo }}枚</li>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-primary" onclick="location.href='/photo_page/{{ album.album_id }}'">再生</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          {% endfor %}
+            {% endfor %}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
 {% endblock %}
